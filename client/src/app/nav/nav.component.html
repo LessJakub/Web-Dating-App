@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Dating app</a>
+
+        <!--Conditionals in angular-->
+        <!-- boolean values in angular are false by default-->
+        <!--Using *ngIf div DOES NOT EXIST unitl condition is met-->
+        <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Lists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Messages</a>
+          </li>
+        </ul>
+
+        <!--To use ngx-bootstrap dropdowns we need to use proper directives-->
+        <!--*dropdownMenu - structural directive-->
+        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+          <a  class="dropdown-toggle text-light" dropdownToggle>Welcomne user</a>
+          <div class="dropdown-menu mt-3"*dropdownMenu>
+            <a class="dropdown-item">Edit profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </div>
+
+
+        <!--Angular form declaration (#)-->
+        <!--Named #loginForm and of type ngForm, provided by angular-->
+        <!--(ngSubmit) is a method(?) of ngForm and will call login() declered in nav.component-->
+        <!--ngSubmit is binded by default by submit button in this form-->
+        <form *ngIf="(accountService.currentUser$ | async) == null" #loginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
+            <!--Implementing two way binding requires: name(property that we want to track)-->
+            <!--a-ng-model =>  [(ngModel)]="binding"-->
+            <!--Square bracets are used from recieving from component-->
+            <!--Parenthasis are used for sending data from template to component-->
+          <input 
+            name="username"
+            [(ngModel)]="model.username"
+            class="form-control me-2"
+            type="text" 
+            placeholder="Username">
+            
+          <input
+            name="password"
+            [(ngModel)]="model.password"
+            class="form-control me-2" 
+            type="password" 
+            placeholder="Password">
+          <button class="btn btn-outline-success" type="submit">Login</button>
+        </form>
+
+      </div>
+
+  </nav>
